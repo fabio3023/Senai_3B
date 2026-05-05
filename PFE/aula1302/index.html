@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./js/index.js" defer></script>
+    <title>Manipulando o DOM - Continuação</title>
+</head>
+<body>
+    <h1 class="titulo"></h1>
+    <p id="texto"></p>
+    <div id="container"></div>
+</body>
+</html>

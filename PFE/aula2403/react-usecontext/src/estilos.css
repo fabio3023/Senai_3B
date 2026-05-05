@@ -1,0 +1,13 @@
+.header-light{
+    background-color: #f8e786;
+    color: blue;
+}
+
+.header-dark{
+    background-color: darkblue;
+    color: white;
+}
+
+.card-container{
+    border: 4px;
+}

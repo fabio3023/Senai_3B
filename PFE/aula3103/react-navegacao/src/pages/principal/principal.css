@@ -1,0 +1,152 @@
+/* Importando a fonte Poppins do Google Fonts para um visual mais moderno */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* --- RESET BÁSICO --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* --- CONTAINER PRINCIPAL --- */
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fdfdfd;
+}
+
+/* --- CABEÇALHO (HEADER) --- */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #d32f2f; /* Vermelho apetitoso */
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 400;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #ffc107; /* Amarelo vibrante no hover */
+}
+
+/* --- SESSÃO BANNER --- */
+.banner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.banner img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    margin-bottom: 25px;
+    object-fit: cover;
+}
+
+.texto-banner h2 {
+    font-size: 2.2rem;
+    color: #222;
+    margin-bottom: 10px;
+}
+
+.texto-banner p {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* --- SESSÃO CARDS --- */
+.cards {
+    flex: 1; /* Faz esta área crescer para empurrar o rodapé */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap; /* NOVO: Permite que os cards quebrem linha em telas menores */
+    gap: 30px; /* NOVO: Adiciona um espaço de 30px entre os cards */
+    padding: 40px 20px 80px;
+    background-color: #f8f9fa;
+}
+
+.cards div {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 350px; /* Mantém o tamanho máximo de cada card uniforme */
+    text-align: center;
+    border-top: 5px solid #ffc107; /* Detalhe na borda superior */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cards div:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.cards h3 {
+    color: #d32f2f;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+}
+
+.cards p {
+    color: #555;
+    line-height: 1.5;
+}
+
+/* --- RODAPÉ (FOOTER) --- */
+footer {
+    text-align: center;
+    padding: 25px 20px;
+    background-color: #222;
+    color: #f1f1f1;
+    margin-top: auto;
+    font-size: 0.9rem;
+}
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .texto-banner h2 {
+        font-size: 1.8rem;
+    }
+}

@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding-top: 100px;
+    background-color: #fafafa;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+#home{
+    background-color: bisque;
+    color: black;
+}
+#sobre{
+    background-color: white;
+    color: black;
+}
+#modalidades{
+    background-color:gray ;
+}
+#planos{
+    background-color: white;
+    color: black;
+}
+#plano{
+    border-color:black ;
+}
+#depoimentos {
+    background-color:whitesmoke ;
+    color: black;
+}
+#contato{
+    background-color: white;
+    color: black;
+}

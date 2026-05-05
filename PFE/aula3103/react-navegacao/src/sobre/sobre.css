@@ -1,0 +1,43 @@
+/* --- CONTAINER DO SOBRE --- */
+.sobre-container {
+    max-width: 800px; /* Limita a largura para o texto não ficar muito esticado */
+    margin: 60px auto; /* Centraliza na tela e dá um respiro no topo e na base */
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* Sombra suave para destacar */
+    border-top: 5px solid #d32f2f; /* Linha vermelha no topo para manter a identidade */
+    text-align: center;
+}
+
+/* --- TÍTULO --- */
+.sobre-container h2 {
+    color: #d32f2f; /* Vermelho da marca */
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+}
+
+/* --- PARÁGRAFO --- */
+.sobre-container p {
+    color: #555;
+    font-size: 1.15rem;
+    line-height: 1.8; /* Espaçamento entre linhas maior para facilitar a leitura */
+    text-align: justify; /* Deixa o bloco de texto mais alinhado e profissional */
+}
+
+/* --- RESPONSIVIDADE (MOBILE) --- */
+@media (max-width: 768px) {
+    .sobre-container {
+        margin: 30px 20px; /* Reduz as margens laterais no celular */
+        padding: 25px;
+    }
+
+    .sobre-container h2 {
+        font-size: 1.8rem;
+    }
+    
+    .sobre-container p {
+        font-size: 1rem;
+        text-align: left; /* No celular, o texto alinhado à esquerda fica melhor que o justificado */
+    }
+}
