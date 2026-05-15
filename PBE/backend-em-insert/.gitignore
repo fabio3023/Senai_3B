@@ -1,0 +1,4 @@
+node_modules/
+pwbi-analises/
+.env
+npm-debug.log*
