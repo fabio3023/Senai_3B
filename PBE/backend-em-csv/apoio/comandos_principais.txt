@@ -1,0 +1,14 @@
+npm install
+
+cp .env-exemplo .env
+
+npm run db:create
+
+npm run dev
+
+npm run import:csv
+
+git status
+git add .
+git commit -m "Adiciona aplicativo completo com importacao CSV"
+git push
