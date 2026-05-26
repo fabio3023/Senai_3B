@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 
-export default function Login({ navigation }) {
+export default function Registro({ navigation }) {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [confSenha, setConfSenha] = useState('');
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Bem Vindo ao Sesi Pet</Text>
-            <Text style={styles.subtitle}>Insira seus dados</Text>
+            <Text style={styles.subtitle}>Cadastre-se</Text>
             <TextInput 
                 style={styles.input}
                 placeholder='Insira seu e-mail'
@@ -22,17 +23,24 @@ export default function Login({ navigation }) {
                 onChangeText={setSenha}
                 secureTextEntry
             />
+            <TextInput 
+                style={styles.input}
+                placeholder='****'
+                value={confSenha}
+                onChangeText={setConfSenha}
+                secureTextEntry
+            />
             <TouchableOpacity 
                 style={styles.buttonPrimary}
-                onPress={() => navigation.replace('Principal')}
+                onPress={() => navigation.navigate('Login')}
             > 
-                <Text style={styles.buttonPrimaryText}>Login</Text>
+                <Text style={styles.buttonPrimaryText}>Cadastrar</Text>
             </TouchableOpacity>
             <TouchableOpacity 
                 style={styles.buttonSecondary}
-                onPress={() => navigation.navigate('Registro')}
+                onPress={() => navigation.navigate('Login')}
             > 
-                <Text style={styles.buttonSecondaryText}>Cadastrar</Text>
+                <Text style={styles.buttonSecondaryText}>Já tenho conta</Text>
             </TouchableOpacity>
         </View>
     );
