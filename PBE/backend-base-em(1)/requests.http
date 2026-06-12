@@ -1,0 +1,50 @@
+@baseUrl = http://localhost:3000
+
+### Rota Raiz
+GET {{baseUrl}}/
+
+### Resumo da API
+GET {{baseUrl}}/api
+
+### Health Check
+GET {{baseUrl}}/api/health
+
+### Listar Leituras com Paginação
+GET {{baseUrl}}/api/leituras?page=1&limit=5
+
+### Filtrar por Estação
+GET {{baseUrl}}/api/leituras?station_id=EM-ARACATUBA-01&page=1&limit=10
+
+### Filtrar por Data
+GET {{baseUrl}}/api/leituras?data_inicio=2026-01-01&data_fim=2026-01-03&page=1&limit=20
+
+### Buscar por ID
+GET {{baseUrl}}/api/leituras/1
+
+### Criar Nova Leitura
+POST {{baseUrl}}/api/leituras
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-01",
+  "timestamp": "2026-06-01T08:00:00-03:00",
+  "temperature_c": 26.7,
+  "humidity_pct": 72.4
+}
+
+### Atualizar Leitura Existente
+PUT {{baseUrl}}/api/leituras/1
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-ALTERADO",
+  "timestamp": "2026-06-01T09:30:00-03:00",
+  "temperature_c": 28.5,
+  "humidity_pct": 65.0
+}
+
+### Excluir Leitura por ID
+DELETE {{baseUrl}}/api/leituras/1
+
+### Limpar Todas as Leituras (Laboratório)
+DELETE {{baseUrl}}/api/leituras
