@@ -3,7 +3,7 @@ import {
   View, Text, TextInput, StyleSheet,
   TouchableOpacity, Image, SafeAreaView
 } from 'react-native';
-import Logo from '../../assets/estacao.jpg';
+import Logo from '../../assets/images/images.jpg';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
