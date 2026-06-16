@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, Dimensions, StyleSheet, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Dimensions,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
 import { LineChart, PieChart } from 'react-native-chart-kit';
 
 const { width } = Dimensions.get('window');
@@ -10,28 +17,30 @@ const dadosLinha = {
 };
 
 const dadosPizza = [
-  { name: 'Jd Paulista', temp: 18, color: '#c0e711' },
-  { name: 'Portal dos Nobres', temp: 20, color: '#192bd1' },
-  { name: 'Três Pontes', temp: 15, color: '#30f422' },
-  { name: 'Jd Alto da Boa Vista', temp: 15, color: '#d22020' },
+  { name: 'Jd Paulista', temp: 18, color: '#38BDF8' },
+  { name: 'Portal dos Nobres', temp: 20, color: '#0284C7' },
+  { name: 'Três Pontes', temp: 15, color: '#0EA5E9' },
+  { name: 'Jd Alto da Boa Vista', temp: 15, color: '#7DD3FC' },
 ];
 
 const chartConfig = {
-  backgroundGradientFrom: '#1E2923',
-  backgroundGradientFromOpacity: 0.3,
-  backgroundGradientTo: '#08130D',
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+  backgroundGradientFrom: '#FFFFFF',
+  backgroundGradientFromOpacity: 1,
+  backgroundGradientTo: '#F0F4F8',
+  backgroundGradientToOpacity: 1,
+  color: (opacity = 1) => `rgba(2, 132, 199, ${opacity})`, // Azul mais sóbrio
   strokeWidth: 2,
   barPercentage: 0.5,
   useShadowColorFromDataset: false,
+  labelColor: (opacity = 1) => `rgba(15, 23, 42, ${opacity})`, // Texto escuro para os labels
+  decimalCount: 0,
 };
 
 export default function Dashboard() {
   return (
     <ScrollView style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A1F1A" />
-      
+      <StatusBar barStyle="dark-content" backgroundColor="#F0F4F8" />
+
       {/* Cabeçalho */}
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Estação Meteorológica SESI</Text>
@@ -102,43 +111,48 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D1B2A',
+    backgroundColor: '#F0F4F8', // Fundo claro igual ao relatório
   },
   header: {
-    paddingTop: 40,
-    paddingBottom: 20,
+    paddingTop: 60,
+    paddingBottom: 24,
     paddingHorizontal: 24,
-    backgroundColor: '#0A1F1A',
+    backgroundColor: '#FFFFFF',
     borderBottomLeftRadius: 24,
     borderBottomRightRadius: 24,
-    marginBottom: 16,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    elevation: 2,
   },
   headerTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#E0F2E9',
+    color: '#0F172A', // Texto escuro
   },
   headerSubtitle: {
     fontSize: 14,
-    color: '#8BA89A',
+    color: '#64748B', // Cinza médio
     marginTop: 4,
   },
   card: {
-    backgroundColor: '#1B2E3C',
+    backgroundColor: '#FFFFFF',
     marginHorizontal: 16,
     borderRadius: 16,
     padding: 20,
     marginBottom: 20,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 5,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3,
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#E0F2E9',
+    color: '#1E293B',
     marginBottom: 12,
   },
   measurementsRow: {
@@ -148,19 +162,19 @@ const styles = StyleSheet.create({
   },
   measurementItem: {
     width: '48%',
-    backgroundColor: '#243B4A',
+    backgroundColor: '#F0F4F8', // Fundo clarinho
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
   },
   measurementDate: {
     fontSize: 12,
-    color: '#8BA89A',
+    color: '#64748B',
   },
   measurementValue: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#1AFF92',
+    color: '#0369A1', // Azul do badge do relatório
     marginTop: 4,
   },
   chartSection: {
@@ -170,12 +184,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#E0F2E9',
+    color: '#1E293B',
     marginBottom: 12,
     marginLeft: 4,
   },
   chart: {
     borderRadius: 16,
+    backgroundColor: '#FFFFFF', // fundo branco para o gráfico
   },
   footer: {
     alignItems: 'center',
@@ -183,7 +198,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   footerText: {
-    color: '#8BA89A',
+    color: '#94A3B8',
     fontSize: 14,
   },
 });

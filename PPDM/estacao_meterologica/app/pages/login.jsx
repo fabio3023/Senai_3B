@@ -56,7 +56,7 @@ export default function Login({ navigation }) {
 
           <TouchableOpacity
             style={styles.btnRegister}
-            onPress={() => navigation.navigate('Cadastro')}
+            onPress={() => navigation.navigate('Registro')}  
           >
             <Text style={styles.btnRegisterText}>Criar uma conta</Text>
           </TouchableOpacity>
@@ -96,11 +96,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: '500',
     marginBottom: 4,
-  },
-  subtitle: {
-    color: '#85B7EB',
-    fontSize: 14,
-    marginBottom: 28,
   },
   card: {
     backgroundColor: '#0C447C',

@@ -1,28 +1,26 @@
 import { useState } from 'react';
 import {
   View, Text, TextInput, StyleSheet,
-  TouchableOpacity, Alert, SafeAreaView
+  TouchableOpacity, SafeAreaView,
 } from 'react-native';
 
-export default function Cadastro() {
+export default function Cadastro({ navigation }) {
   const [temp, setTemp] = useState('');
   const [hum, setHum] = useState('');
   const [kmVento, setKmVento] = useState('');
 
-  const handleSalvar = () => {
-    if (!temp || !hum || !kmVento) {
-      Alert.alert('Atenção', 'Preencha todos os campos antes de salvar.');
-      return;
-    }
-    // lógica de salvar aqui
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.inner}>
+      {/* Botão de voltar ao Dashboard */}
+      <TouchableOpacity
+        style={styles.voltarBtn}
+        onPress={() => navigation.navigate('Principal', { screen: 'Inicio' })}
+      >
+        <Text style={styles.voltarTexto}>← Voltar</Text>
+      </TouchableOpacity>
 
+      <View style={styles.inner}>
         <View style={styles.iconWrapper}>
-          {/* substitua por um ícone da sua lib, ex: Ionicons */}
           <Text style={styles.iconPlaceholder}>☁</Text>
         </View>
 
@@ -30,7 +28,6 @@ export default function Cadastro() {
         <Text style={styles.subtitle}>Registre os dados climáticos</Text>
 
         <View style={styles.card}>
-
           <Text style={styles.label}>TEMPERATURA</Text>
           <View style={styles.fieldWrap}>
             <TextInput
@@ -72,12 +69,14 @@ export default function Cadastro() {
 
           <View style={styles.divider} />
 
-          <TouchableOpacity style={styles.btnSave} onPress={handleSalvar}>
+          <TouchableOpacity
+            style={styles.btnSave}
+            onPress={() => navigation.navigate('Principal', { screen: 'Inicio' })}
+          >
             <Text style={styles.btnSaveText}>Salvar medição</Text>
           </TouchableOpacity>
 
           <Text style={styles.hint}>Todos os campos são obrigatórios</Text>
-
         </View>
       </View>
     </SafeAreaView>
@@ -89,11 +88,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#042C53',
   },
+  voltarBtn: {
+    position: 'absolute',
+    top: 50,
+    left: 20,
+    zIndex: 10,
+    backgroundColor: '#0C447C',
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    borderWidth: 0.5,
+    borderColor: '#185FA5',
+  },
+  voltarTexto: {
+    color: '#E6F1FB',
+    fontSize: 14,
+    fontWeight: '500',
+  },
   inner: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
+    marginTop: 40,
   },
   iconWrapper: {
     width: 72,
