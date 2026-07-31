@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:3000
+@api = {{baseUrl}}/api/v1
+
+### Rota raiz
+GET {{baseUrl}}
+
+### Catálogo da API
+GET {{api}}
+
+### Liveness: processo HTTP está vivo
+GET {{api}}/health/live
+
+### Readiness: API e banco estão prontos
+GET {{api}}/health/ready
+
+### Listar com paginação
+GET {{api}}/leituras?page=1&limit=5
+
+### Filtrar por estação
+GET {{api}}/leituras?station_id=EM-ARACATUBA-01&page=1&limit=10
+
+### Filtrar por intervalo; data_fim inclui o dia inteiro
+GET {{api}}/leituras?data_inicio=2026-01-01&data_fim=2026-01-03&page=1&limit=20
+
+### Criar
+POST {{api}}/leituras
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-01",
+  "timestamp": "2026-07-30T08:00:00-03:00",
+  "temperature_c": 26.7,
+  "humidity_pct": 72.4
+}
+
+### Buscar por ID
+GET {{api}}/leituras/1
+
+### Substituir completamente com PUT
+PUT {{api}}/leituras/1
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-01",
+  "timestamp": "2026-07-30T09:00:00-03:00",
+  "temperature_c": 27.1,
+  "humidity_pct": 70.5
+}
+
+### Atualizar parcialmente com PATCH
+PATCH {{api}}/leituras/1
+Content-Type: application/json
+
+{
+  "humidity_pct": 68.9
+}
+
+### Excluir por ID
+DELETE {{api}}/leituras/1
+
+### Excluir todos — somente laboratório
+DELETE {{api}}/leituras

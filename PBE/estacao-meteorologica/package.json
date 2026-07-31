@@ -1,0 +1,49 @@
+{
+  "name": "backend-em-ncamadas-profissional",
+  "version": "2.1.0",
+  "description": "API REST didática e profissional em N-Camadas com Node.js, Express, PostgreSQL local e Sequelize.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:check": "node src/scripts/checkDatabase.js",
+    "db:migrate": "node src/scripts/migrateDatabase.js",
+    "db:status": "node src/scripts/migrationStatus.js",
+    "import:csv": "node src/scripts/importCsv.js",
+    "import:csv:clear": "node src/scripts/importCsv.js --clear",
+    "reset:leituras": "node src/scripts/resetLeituras.js",
+    "test:api": "node src/scripts/testApiAxios.js",
+    "test": "node --test",
+    "check": "node src/scripts/checkSyntax.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "postgresql",
+    "sequelize",
+    "api-rest",
+    "n-camadas",
+    "dto",
+    "repository",
+    "dependency-injection",
+    "migrations"
+  ],
+  "author": "Projeto didático SESI/SENAI",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "8.21.0",
+    "pg-hstore": "2.3.4",
+    "sequelize": "6.37.8"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

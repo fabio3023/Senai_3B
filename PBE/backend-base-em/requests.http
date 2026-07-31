@@ -1,0 +1,48 @@
+### Rota raiz da aplicação
+GET http://localhost:3000
+
+### Rota raiz da API
+GET http://localhost:3000/api
+
+### Health check
+GET http://localhost:3000/api/health
+
+### Listar leituras com paginação
+GET http://localhost:3000/api/leituras?page=1&limit=5
+
+### Filtrar por estação
+GET http://localhost:3000/api/leituras?station_id=EM-ARACATUBA-01&page=1&limit=10
+
+### Filtrar por intervalo de datas
+GET http://localhost:3000/api/leituras?data_inicio=2026-01-01&data_fim=2026-01-03&page=1&limit=20
+
+### Buscar por ID
+GET http://localhost:3000/api/leituras/1
+
+### Criar leitura manualmente
+POST http://localhost:3000/api/leituras
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-01",
+  "timestamp": "2026-06-01T08:00:00-03:00",
+  "temperature_c": 26.7,
+  "humidity_pct": 72.4
+}
+
+### Atualizar leitura
+PUT http://localhost:3000/api/leituras/1
+Content-Type: application/json
+
+{
+  "station_id": "EM-TESTE-01",
+  "timestamp": "2026-06-01T09:00:00-03:00",
+  "temperature_c": 27.1,
+  "humidity_pct": 70.5
+}
+
+### Excluir uma leitura
+DELETE http://localhost:3000/api/leituras/1
+
+### Excluir todas as leituras - use apenas em laboratório
+DELETE http://localhost:3000/api/leituras
