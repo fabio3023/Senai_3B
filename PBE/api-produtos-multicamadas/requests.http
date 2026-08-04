@@ -1,0 +1,55 @@
+@baseUrl = http://localhost:3000
+@productId = COLE_AQUI_O_UUID_DO_PRODUTO
+
+### Informações da API
+GET {{baseUrl}}/
+
+### Health check
+GET {{baseUrl}}/health
+
+### Criar produto
+POST {{baseUrl}}/api/products
+Content-Type: application/json
+
+{
+  "sku": "MON-001",
+  "name": "Monitor 24 polegadas",
+  "description": "Monitor IPS Full HD",
+  "price": 899.90,
+  "stock": 15,
+  "active": true
+}
+
+### Listar produtos
+GET {{baseUrl}}/api/products?page=1&limit=10
+
+### Pesquisar e ordenar
+GET {{baseUrl}}/api/products?name=monitor&active=true&minPrice=100&maxPrice=2000&sortBy=price&order=ASC
+
+### Buscar por ID
+GET {{baseUrl}}/api/products/{{productId}}
+
+### Substituir produto
+PUT {{baseUrl}}/api/products/{{productId}}
+Content-Type: application/json
+
+{
+  "sku": "MON-001",
+  "name": "Monitor 24 polegadas atualizado",
+  "description": "Monitor IPS Full HD com HDMI",
+  "price": 949.90,
+  "stock": 18,
+  "active": true
+}
+
+### Atualizar parcialmente
+PATCH {{baseUrl}}/api/products/{{productId}}
+Content-Type: application/json
+
+{
+  "price": 929.90,
+  "stock": 20
+}
+
+### Excluir produto
+DELETE {{baseUrl}}/api/products/{{productId}}

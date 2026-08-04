@@ -1,0 +1,42 @@
+{
+  "name": "api-produtos-multicamadas",
+  "version": "1.0.0",
+  "description": "API REST profissional em múltiplas camadas para gerenciamento de produtos.",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "node --test tests/application/ProductService.test.js",
+    "seed": "node src/infrastructure/database/seed.js",
+    "db:reset": "node src/infrastructure/database/resetDatabase.js --yes",
+    "check": "node scripts/check-project.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "postgresql",
+    "sequelize",
+    "crud",
+    "n-camadas",
+    "rest-api"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.22.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.37.7",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

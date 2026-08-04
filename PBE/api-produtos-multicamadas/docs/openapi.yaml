@@ -1,0 +1,119 @@
+openapi: 3.0.3
+info:
+  title: API de Produtos Multicamadas
+  version: 1.0.0
+  description: CRUD completo de produtos com Node.js, Express, Sequelize e PostgreSQL.
+servers:
+  - url: http://localhost:3000
+paths:
+  /health:
+    get:
+      summary: Verifica a saúde da API e do banco
+      responses:
+        '200':
+          description: Serviço disponível
+        '503':
+          description: Banco indisponível
+  /api/products:
+    get:
+      summary: Lista produtos com filtros e paginação
+      parameters:
+        - in: query
+          name: page
+          schema: { type: integer, minimum: 1, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 100, default: 10 }
+        - in: query
+          name: name
+          schema: { type: string }
+        - in: query
+          name: sku
+          schema: { type: string }
+        - in: query
+          name: active
+          schema: { type: boolean }
+        - in: query
+          name: minPrice
+          schema: { type: number, minimum: 0 }
+        - in: query
+          name: maxPrice
+          schema: { type: number, minimum: 0 }
+      responses:
+        '200':
+          description: Lista retornada
+    post:
+      summary: Cria um produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Produto criado
+        '400':
+          description: Dados inválidos
+        '409':
+          description: SKU duplicado
+  /api/products/{id}:
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema: { type: string, format: uuid }
+    get:
+      summary: Busca um produto pelo ID
+      responses:
+        '200': { description: Produto encontrado }
+        '404': { description: Produto não encontrado }
+    put:
+      summary: Substitui os dados de um produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200': { description: Produto atualizado }
+        '404': { description: Produto não encontrado }
+    patch:
+      summary: Atualiza parcialmente um produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductPatch'
+      responses:
+        '200': { description: Produto atualizado }
+        '404': { description: Produto não encontrado }
+    delete:
+      summary: Exclui um produto
+      responses:
+        '204': { description: Produto excluído }
+        '404': { description: Produto não encontrado }
+components:
+  schemas:
+    ProductInput:
+      type: object
+      required: [sku, name, price, stock]
+      properties:
+        sku: { type: string, maxLength: 50, example: MON-001 }
+        name: { type: string, maxLength: 150, example: Monitor 24 polegadas }
+        description: { type: string, nullable: true }
+        price: { type: number, minimum: 0, example: 899.90 }
+        stock: { type: integer, minimum: 0, example: 15 }
+        active: { type: boolean, default: true }
+    ProductPatch:
+      type: object
+      minProperties: 1
+      properties:
+        sku: { type: string }
+        name: { type: string }
+        description: { type: string, nullable: true }
+        price: { type: number, minimum: 0 }
+        stock: { type: integer, minimum: 0 }
+        active: { type: boolean }
