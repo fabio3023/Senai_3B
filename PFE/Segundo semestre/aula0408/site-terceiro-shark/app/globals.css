@@ -1,0 +1,107 @@
+:root {
+  --color-canvas: #f5f8f7;
+  --color-surface: #ffffff;
+  --color-ink: #071d25;
+  --color-ocean: #062833;
+  --color-teal: #0b7378;
+  --color-mint: #83ead5;
+  --color-pale: #e8f2ef;
+  --color-muted: #526a70;
+  --color-soft: #7b8d91;
+  --color-line: rgba(7, 45, 55, 0.13);
+  --font-sans:
+    Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+main {
+  min-width: 0;
+  flex: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+}
+
+::selection {
+  color: var(--color-ocean);
+  background: var(--color-mint);
+}
+
+:focus-visible {
+  outline: 3px solid #18a6a4;
+  outline-offset: 4px;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 10px;
+  left: 12px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  color: white;
+  background: var(--color-ocean);
+  font-size: 0.88rem;
+  font-weight: 700;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
