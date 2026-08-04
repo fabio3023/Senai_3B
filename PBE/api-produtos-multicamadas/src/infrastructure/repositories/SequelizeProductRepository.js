@@ -23,6 +23,7 @@ class SequelizeProductRepository extends ProductRepository {
     limit = 10,
     name,
     sku,
+    category,
     active,
     minPrice,
     maxPrice,
@@ -33,6 +34,7 @@ class SequelizeProductRepository extends ProductRepository {
 
     if (name) where.name = { [Op.iLike]: `%${name}%` };
     if (sku) where.sku = { [Op.iLike]: `%${sku}%` };
+    if (category) where.category = { [Op.iLike]: `%${category}%` };
     if (active !== undefined) where.active = active;
 
     if (minPrice !== undefined || maxPrice !== undefined) {

@@ -5,6 +5,7 @@ class UpdateProductDTO {
     if (payload.description !== undefined) {
       this.description = payload.description?.trim() || null;
     }
+    if (payload.category !== undefined) this.category = payload.category.trim();
     if (payload.price !== undefined) this.price = Number(payload.price);
     if (payload.stock !== undefined) this.stock = Number(payload.stock);
     if (payload.active !== undefined) this.active = Boolean(payload.active);

@@ -4,6 +4,7 @@ class Product {
     sku,
     name,
     description = null,
+    category,
     price,
     stock = 0,
     active = true,
@@ -14,6 +15,7 @@ class Product {
     this.sku = sku;
     this.name = name;
     this.description = description;
+    this.category = category;
     this.price = Number(price);
     this.stock = Number(stock);
     this.active = Boolean(active);

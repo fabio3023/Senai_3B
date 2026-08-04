@@ -4,6 +4,7 @@ class ProductResponseDTO {
     this.sku = product.sku;
     this.name = product.name;
     this.description = product.description;
+    this.category = product.category;
     this.price = Number(product.price);
     this.stock = Number(product.stock);
     this.active = Boolean(product.active);

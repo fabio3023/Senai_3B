@@ -21,7 +21,7 @@ function createApp({ container, sequelize }) {
     res.status(200).json({
       name: 'API de Produtos Multicamadas',
       version: '1.0.0',
-      documentation: '/api/products',
+      documentation: '/api/produtos',
       health: '/health',
     });
   });

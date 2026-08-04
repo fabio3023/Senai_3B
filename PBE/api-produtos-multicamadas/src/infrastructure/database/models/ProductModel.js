@@ -22,6 +22,10 @@ const ProductModel = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    category: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
     price: {
       type: DataTypes.DECIMAL(12, 2),
       allowNull: false,
@@ -48,6 +52,7 @@ const ProductModel = sequelize.define(
     timestamps: true,
     indexes: [
       { fields: ['name'] },
+      { fields: ['category'] },
       { fields: ['active'] },
       { fields: ['price'] },
     ],

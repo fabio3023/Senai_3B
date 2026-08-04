@@ -8,42 +8,44 @@ GET {{baseUrl}}/
 GET {{baseUrl}}/health
 
 ### Criar produto
-POST {{baseUrl}}/api/products
+POST {{baseUrl}}/api/produtos
 Content-Type: application/json
 
 {
   "sku": "MON-001",
   "name": "Monitor 24 polegadas",
   "description": "Monitor IPS Full HD",
+  "category": "Monitores",
   "price": 899.90,
   "stock": 15,
   "active": true
 }
 
 ### Listar produtos
-GET {{baseUrl}}/api/products?page=1&limit=10
+GET {{baseUrl}}/api/produtos?page=1&limit=10
 
 ### Pesquisar e ordenar
-GET {{baseUrl}}/api/products?name=monitor&active=true&minPrice=100&maxPrice=2000&sortBy=price&order=ASC
+GET {{baseUrl}}/api/produtos?category=Monitores&active=true&minPrice=100&maxPrice=2000&sortBy=price&order=ASC
 
 ### Buscar por ID
-GET {{baseUrl}}/api/products/{{productId}}
+GET {{baseUrl}}/api/produtos/{{productId}}
 
 ### Substituir produto
-PUT {{baseUrl}}/api/products/{{productId}}
+PUT {{baseUrl}}/api/produtos/{{productId}}
 Content-Type: application/json
 
 {
   "sku": "MON-001",
   "name": "Monitor 24 polegadas atualizado",
   "description": "Monitor IPS Full HD com HDMI",
+  "category": "Monitores",
   "price": 949.90,
   "stock": 18,
   "active": true
 }
 
 ### Atualizar parcialmente
-PATCH {{baseUrl}}/api/products/{{productId}}
+PATCH {{baseUrl}}/api/produtos/{{productId}}
 Content-Type: application/json
 
 {
@@ -52,4 +54,4 @@ Content-Type: application/json
 }
 
 ### Excluir produto
-DELETE {{baseUrl}}/api/products/{{productId}}
+DELETE {{baseUrl}}/api/produtos/{{productId}}

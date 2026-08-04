@@ -59,6 +59,7 @@ const baseProduct = {
   sku: 'PROD-001',
   name: 'Produto de Teste',
   description: null,
+  category: 'Testes',
   price: 10,
   stock: 5,
   active: true,
@@ -71,11 +72,13 @@ test('cria um produto normalizando o SKU', async () => {
   const result = await service.create({
     sku: ' prod-002 ',
     name: 'Produto Novo',
+    category: 'Testes',
     price: 20,
     stock: 3,
   });
 
   assert.equal(result.sku, 'PROD-002');
+  assert.equal(result.category, 'Testes');
   assert.equal(result.price, 20);
   assert.equal(result.stock, 3);
 });
@@ -84,7 +87,13 @@ test('impede a criação de SKU duplicado', async () => {
   const service = new ProductService(new FakeProductRepository([baseProduct]));
 
   await assert.rejects(
-    () => service.create({ sku: 'PROD-001', name: 'Duplicado', price: 12, stock: 1 }),
+    () => service.create({
+      sku: 'PROD-001',
+      name: 'Duplicado',
+      category: 'Testes',
+      price: 12,
+      stock: 1,
+    }),
     (error) => error.statusCode === 409,
   );
 });

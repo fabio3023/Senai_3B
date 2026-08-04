@@ -17,7 +17,7 @@ A aplicação usa JavaScript CommonJS e uma arquitetura em múltiplas camadas, a
 - Tratamento centralizado de erros.
 - Proteções HTTP com Helmet e suporte a CORS.
 - Health check da API e do PostgreSQL.
-- Seed inicial, reset didático, testes unitários e documentação OpenAPI.
+- Seed inicial com 50 produtos variados, reset didático, testes unitários e documentação OpenAPI.
 - Scripts para Windows, Linux e Git Bash.
 
 ## Estrutura de pastas
@@ -61,6 +61,7 @@ api-produtos-multicamadas/
 ├── tests/
 ├── .env.example
 ├── package.json
+├── postman_collection.json
 ├── requests.http
 └── README.md
 ```
@@ -173,7 +174,8 @@ Para finalizar, pressione `Ctrl+C`. A conexão HTTP e o Sequelize serão encerra
 
 - API: `http://localhost:3000`
 - Health check: `http://localhost:3000/health`
-- Produtos: `http://localhost:3000/api/products`
+- Produtos (rota principal): `http://localhost:3000/api/produtos`
+- Alias legado: `http://localhost:3000/api/products`
 
 ## Modelo de produto
 
@@ -183,6 +185,7 @@ Para finalizar, pressione `Ctrl+C`. A conexão HTTP e o Sequelize serão encerra
 | `sku` | texto | Obrigatório e único |
 | `name` | texto | Obrigatório, até 150 caracteres |
 | `description` | texto | Opcional |
+| `category` | texto | Obrigatório, de 2 a 100 caracteres |
 | `price` | decimal | Obrigatório e maior ou igual a zero |
 | `stock` | inteiro | Maior ou igual a zero |
 | `active` | booleano | Padrão `true` |
@@ -193,17 +196,19 @@ Para finalizar, pressione `Ctrl+C`. A conexão HTTP e o Sequelize serão encerra
 
 | Método | Endpoint | Função |
 |---|---|---|
-| `POST` | `/api/products` | Criar produto |
-| `GET` | `/api/products` | Listar, filtrar e paginar |
-| `GET` | `/api/products/:id` | Buscar por ID |
-| `PUT` | `/api/products/:id` | Substituir todos os dados editáveis |
-| `PATCH` | `/api/products/:id` | Atualizar alguns campos |
-| `DELETE` | `/api/products/:id` | Excluir produto |
+| `POST` | `/api/produtos` | Criar produto |
+| `GET` | `/api/produtos` | Listar, filtrar e paginar |
+| `GET` | `/api/produtos/:id` | Buscar por ID |
+| `PUT` | `/api/produtos/:id` | Substituir todos os dados editáveis |
+| `PATCH` | `/api/produtos/:id` | Atualizar alguns campos |
+| `DELETE` | `/api/produtos/:id` | Excluir produto |
+
+Por compatibilidade, as mesmas operações continuam disponíveis no alias legado `/api/products`.
 
 ## Criar um produto
 
 ```http
-POST /api/products
+POST /api/produtos
 Content-Type: application/json
 ```
 
@@ -212,6 +217,7 @@ Content-Type: application/json
   "sku": "MON-001",
   "name": "Monitor 24 polegadas",
   "description": "Monitor IPS Full HD",
+  "category": "Monitores",
   "price": 899.90,
   "stock": 15,
   "active": true
@@ -223,23 +229,24 @@ Resposta esperada: `201 Created`.
 ## Listagem, paginação e filtros
 
 ```http
-GET /api/products?page=1&limit=10
+GET /api/produtos?page=1&limit=10
 ```
 
 Filtros disponíveis:
 
 - `name`
 - `sku`
+- `category`
 - `active=true` ou `active=false`
 - `minPrice`
 - `maxPrice`
-- `sortBy=name|sku|price|stock|active|createdAt|updatedAt`
+- `sortBy=name|sku|category|price|stock|active|createdAt|updatedAt`
 - `order=ASC|DESC`
 
 Exemplo:
 
 ```http
-GET /api/products?name=monitor&active=true&minPrice=500&maxPrice=2000&sortBy=price&order=ASC
+GET /api/produtos?category=Monitores&active=true&minPrice=500&maxPrice=2000&sortBy=price&order=ASC
 ```
 
 ## Resposta padronizada de sucesso
@@ -252,6 +259,7 @@ GET /api/products?name=monitor&active=true&minPrice=500&maxPrice=2000&sortBy=pri
     "sku": "MON-001",
     "name": "Monitor 24 polegadas",
     "description": "Monitor IPS Full HD",
+    "category": "Monitores",
     "price": 899.9,
     "stock": 15,
     "active": true,
@@ -281,7 +289,7 @@ GET /api/products?name=monitor&active=true&minPrice=500&maxPrice=2000&sortBy=pri
 
 ## Carga inicial
 
-Para inserir três produtos de exemplo:
+Para inserir 50 produtos reais e variados de e-commerce, distribuídos em diversas categorias:
 
 ```bash
 npm run seed
@@ -320,13 +328,13 @@ Abra `requests.http` com a extensão REST Client. Execute primeiro a criação d
 ## Testar com curl
 
 ```bash
-curl -X POST http://localhost:3000/api/products \
+curl -X POST http://localhost:3000/api/produtos \
   -H "Content-Type: application/json" \
-  -d '{"sku":"CABO-001","name":"Cabo USB-C","price":39.90,"stock":30,"active":true}'
+  -d '{"sku":"CABO-001","name":"Cabo USB-C","category":"Acessórios","price":39.90,"stock":30,"active":true}'
 ```
 
 ```bash
-curl http://localhost:3000/api/products
+curl http://localhost:3000/api/produtos
 ```
 
 ## Códigos HTTP usados
@@ -375,7 +383,7 @@ A especificação está em `docs/openapi.yaml` e pode ser aberta em editores com
 ## Próximas evoluções naturais
 
 - autenticação e autorização;
-- categorias e fornecedores;
+- fornecedores e marcas;
 - movimentações de estoque;
 - soft delete e auditoria;
 - testes de integração HTTP;

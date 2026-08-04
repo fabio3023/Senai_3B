@@ -1,0 +1,166 @@
+{
+  "info": {
+    "_postman_id": "b719b13d-01c7-4ee5-b7d5-d52c831430f2",
+    "name": "API de Produtos Multicamadas",
+    "description": "Coleção para testar o CRUD de produtos. Execute primeiro a requisição de criação para preencher automaticamente a variável produtoId usada nas demais operações por ID.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Criar produto",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    if (response.data && response.data.id) {",
+              "        pm.collectionVariables.set('produtoId', response.data.id);",
+              "    }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"FON-POSTMAN-001\",\n  \"name\": \"Fone de Ouvido Bluetooth\",\n  \"description\": \"Fone sem fio com cancelamento de ruído e autonomia de 30 horas.\",\n  \"category\": \"Eletrônicos\",\n  \"price\": 349.90,\n  \"stock\": 25,\n  \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/produtos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "produtos"
+          ]
+        },
+        "description": "Cria um produto e armazena automaticamente o ID retornado na variável de coleção produtoId."
+      },
+      "response": []
+    },
+    {
+      "name": "Listar produtos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/produtos",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "produtos"
+          ]
+        },
+        "description": "Retorna a lista paginada de produtos."
+      },
+      "response": []
+    },
+    {
+      "name": "Buscar produto por ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/produtos/{{produtoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "produtos",
+            "{{produtoId}}"
+          ]
+        },
+        "description": "Busca um produto pelo UUID armazenado em produtoId."
+      },
+      "response": []
+    },
+    {
+      "name": "Atualizar produto",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sku\": \"FON-POSTMAN-001\",\n  \"name\": \"Fone de Ouvido Bluetooth Pro\",\n  \"description\": \"Fone sem fio atualizado, com cancelamento de ruído e autonomia de 40 horas.\",\n  \"category\": \"Eletrônicos\",\n  \"price\": 399.90,\n  \"stock\": 30,\n  \"active\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/produtos/{{produtoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "produtos",
+            "{{produtoId}}"
+          ]
+        },
+        "description": "Substitui todos os campos editáveis de um produto existente."
+      },
+      "response": []
+    },
+    {
+      "name": "Excluir produto",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/produtos/{{produtoId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "produtos",
+            "{{produtoId}}"
+          ]
+        },
+        "description": "Exclui o produto identificado por produtoId."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "produtoId",
+      "value": "00000000-0000-4000-8000-000000000001",
+      "type": "string"
+    }
+  ]
+}

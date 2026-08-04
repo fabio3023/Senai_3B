@@ -14,7 +14,7 @@ paths:
           description: Serviço disponível
         '503':
           description: Banco indisponível
-  /api/products:
+  /api/produtos:
     get:
       summary: Lista produtos com filtros e paginação
       parameters:
@@ -31,6 +31,9 @@ paths:
           name: sku
           schema: { type: string }
         - in: query
+          name: category
+          schema: { type: string }
+        - in: query
           name: active
           schema: { type: boolean }
         - in: query
@@ -39,9 +42,32 @@ paths:
         - in: query
           name: maxPrice
           schema: { type: number, minimum: 0 }
+          description: Deve ser maior ou igual a minPrice quando ambos forem informados.
+        - in: query
+          name: sortBy
+          schema:
+            type: string
+            enum: [name, sku, category, price, stock, active, createdAt, updatedAt]
+            default: createdAt
+        - in: query
+          name: order
+          schema:
+            type: string
+            enum: [ASC, DESC, asc, desc]
+            default: DESC
       responses:
         '200':
           description: Lista retornada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductListResponse'
+        '400':
+          description: Filtros inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Cria um produto
       requestBody:
@@ -49,15 +75,27 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductInput'
+              $ref: '#/components/schemas/ProductCreate'
       responses:
         '201':
           description: Produto criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
         '400':
           description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '409':
           description: SKU duplicado
-  /api/products/{id}:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/produtos/{id}:
     parameters:
       - in: path
         name: id
@@ -66,8 +104,24 @@ paths:
     get:
       summary: Busca um produto pelo ID
       responses:
-        '200': { description: Produto encontrado }
-        '404': { description: Produto não encontrado }
+        '200':
+          description: Produto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '400':
+          description: UUID inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     put:
       summary: Substitui os dados de um produto
       requestBody:
@@ -75,10 +129,32 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProductInput'
+              $ref: '#/components/schemas/ProductReplace'
       responses:
-        '200': { description: Produto atualizado }
-        '404': { description: Produto não encontrado }
+        '200':
+          description: Produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '400':
+          description: Dados ou UUID inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: SKU duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       summary: Atualiza parcialmente um produto
       requestBody:
@@ -88,32 +164,142 @@ paths:
             schema:
               $ref: '#/components/schemas/ProductPatch'
       responses:
-        '200': { description: Produto atualizado }
-        '404': { description: Produto não encontrado }
+        '200':
+          description: Produto atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '400':
+          description: Dados ou UUID inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: SKU duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Exclui um produto
       responses:
         '204': { description: Produto excluído }
-        '404': { description: Produto não encontrado }
+        '400':
+          description: UUID inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Produto não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
-    ProductInput:
+    ProductCreate:
       type: object
-      required: [sku, name, price, stock]
+      required: [sku, name, category, price]
       properties:
-        sku: { type: string, maxLength: 50, example: MON-001 }
-        name: { type: string, maxLength: 150, example: Monitor 24 polegadas }
-        description: { type: string, nullable: true }
-        price: { type: number, minimum: 0, example: 899.90 }
-        stock: { type: integer, minimum: 0, example: 15 }
+        sku: { type: string, minLength: 2, maxLength: 50, example: MON-001 }
+        name: { type: string, minLength: 2, maxLength: 150, example: Monitor 24 polegadas }
+        description:
+          type: string
+          maxLength: 2000
+          nullable: true
+          example: Monitor IPS Full HD
+        category:
+          type: string
+          minLength: 2
+          maxLength: 100
+          example: Monitores
+        price:
+          type: number
+          minimum: 0
+          maximum: 9999999999.99
+          example: 899.90
+        stock:
+          type: integer
+          minimum: 0
+          maximum: 2147483647
+          default: 0
+          example: 15
         active: { type: boolean, default: true }
+    ProductReplace:
+      allOf:
+        - $ref: '#/components/schemas/ProductCreate'
+        - type: object
+          required: [stock]
     ProductPatch:
       type: object
       minProperties: 1
       properties:
-        sku: { type: string }
-        name: { type: string }
-        description: { type: string, nullable: true }
-        price: { type: number, minimum: 0 }
-        stock: { type: integer, minimum: 0 }
+        sku: { type: string, minLength: 2, maxLength: 50 }
+        name: { type: string, minLength: 2, maxLength: 150 }
+        description: { type: string, maxLength: 2000, nullable: true }
+        category: { type: string, minLength: 2, maxLength: 100 }
+        price: { type: number, minimum: 0, maximum: 9999999999.99 }
+        stock: { type: integer, minimum: 0, maximum: 2147483647 }
         active: { type: boolean }
+    Product:
+      allOf:
+        - $ref: '#/components/schemas/ProductCreate'
+        - type: object
+          required: [id, stock, active, createdAt, updatedAt]
+          properties:
+            id: { type: string, format: uuid }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+    ProductResponse:
+      type: object
+      required: [success, data]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data:
+          $ref: '#/components/schemas/Product'
+    Pagination:
+      type: object
+      required: [page, limit, totalItems, totalPages]
+      properties:
+        page: { type: integer, minimum: 1 }
+        limit: { type: integer, minimum: 1, maximum: 100 }
+        totalItems: { type: integer, minimum: 0 }
+        totalPages: { type: integer, minimum: 0 }
+    ProductListResponse:
+      type: object
+      required: [success, data, pagination]
+      properties:
+        success: { type: boolean, enum: [true] }
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+    ErrorResponse:
+      type: object
+      required: [success, error]
+      properties:
+        success: { type: boolean, enum: [false] }
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details:
+              type: array
+              items:
+                type: object
+                properties:
+                  field: { type: string }
+                  message: { type: string }

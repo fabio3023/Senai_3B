@@ -34,7 +34,7 @@ async function start() {
     httpServer = app.listen(env.app.port, () => {
       console.log(`API disponível em http://localhost:${env.app.port}`);
       console.log(`Health check: http://localhost:${env.app.port}/health`);
-      console.log(`Produtos: http://localhost:${env.app.port}/api/products`);
+      console.log(`Produtos: http://localhost:${env.app.port}/api/produtos`);
     });
   } catch (error) {
     console.error('Não foi possível iniciar a API.');
