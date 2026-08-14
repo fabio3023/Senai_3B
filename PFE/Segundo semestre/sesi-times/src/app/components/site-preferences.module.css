@@ -1,0 +1,64 @@
+.preferences {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.iconButton {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--ink-700);
+  background: var(--surface);
+  cursor: pointer;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.iconButton:hover:not(:disabled) {
+  border-color: #aec2d9;
+  color: var(--blue-600);
+  background: var(--surface-blue);
+  transform: translateY(-1px);
+}
+
+.iconButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.iconButton svg {
+  width: 20px;
+  height: 20px;
+  overflow: visible;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.notificationDot {
+  fill: #23c483;
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+@media (max-width: 520px) {
+  .preferences {
+    gap: 5px;
+  }
+
+  .iconButton {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+@media (max-width: 390px) {
+  .preferences .iconButton:last-child {
+    display: none;
+  }
+}

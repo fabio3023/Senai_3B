@@ -1,0 +1,60 @@
+.wrapper {
+  margin-top: 20px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.actionButton {
+  min-height: 43px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  color: var(--ink-700);
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 0.79rem;
+  font-weight: 750;
+  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease,
+    background 160ms ease;
+}
+
+.actionButton:hover,
+.actionButton[aria-pressed="true"] {
+  border-color: #aac8ec;
+  color: var(--blue-600);
+  background: var(--surface-blue);
+  transform: translateY(-1px);
+}
+
+.actionButton svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.liveMessage {
+  min-height: 20px;
+  margin-top: 7px;
+  color: var(--ink-500);
+  font-size: 0.7rem;
+}
+
+.wrapper[data-compact="true"] {
+  margin-top: 12px;
+}
+
+.wrapper[data-compact="true"] .actionButton {
+  min-height: 38px;
+  padding-inline: 11px;
+  font-size: 0.72rem;
+}

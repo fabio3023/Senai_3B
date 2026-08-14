@@ -1,0 +1,49 @@
+.backToTop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 80;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  color: white;
+  background: var(--navy-900);
+  box-shadow: 0 14px 30px rgba(4, 18, 40, 0.25);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(14px);
+  transition: opacity 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.backToTop[data-visible="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.backToTop:hover {
+  background: var(--blue-600);
+  transform: translateY(-2px);
+}
+
+.backToTop svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (max-width: 640px) {
+  .backToTop {
+    right: 16px;
+    bottom: 16px;
+    width: 44px;
+    height: 44px;
+  }
+}
