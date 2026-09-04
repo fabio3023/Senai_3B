@@ -15,7 +15,7 @@ export default function Header() {
       <nav className={styles.nav} aria-label="Menu principal">
         <Link href="/">Início</Link>
         <Link href="/principal">Sobre</Link>
-        <Link href="/cadalunos">Cadastro</Link>
+        <Link href="/alunos">Cadastro</Link>
         <Link href="/listalunos">Lista</Link>
         <Link href="/cadnotas">Notas</Link>
       </nav>

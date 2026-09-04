@@ -76,7 +76,7 @@ export default function Principal() {
           </p>
 
           <div className={styles.actions}>
-            <Link href="/" className={styles.primaryButton}>Conhecer a escola</Link>
+            <Link href="/alunos" className={styles.primaryButton}>Cadastrar aluno</Link>
             <Link href="/cadnotas" className={styles.secondaryButton}>Saiba mais</Link>
           </div>
 
