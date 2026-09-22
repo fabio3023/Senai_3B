@@ -1,4 +1,8 @@
 .page { width: min(1180px, calc(100% - 40px)); margin: 0 auto; padding: 26px 0 72px; }
+.feedback, .error { margin-bottom: 16px; padding: 12px 14px; border-radius: 10px; }
+.feedback { background: #ecfdf3; color: #166534; }
+.error { background: #fef2f2; color: #991b1b; }
+.rowActions button:disabled { opacity: .6; cursor: wait; }
 .heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 30px; }
 .eyebrow { display: block; margin-bottom: 9px; color: var(--color-primary); font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .heading h2 { color: #18181b; font-size: clamp(2.3rem, 5vw, 3.8rem); line-height: 1; letter-spacing: -.055em; }

@@ -100,7 +100,9 @@
 .formHeader h3 { margin-top: 7px; color: #202024; font-size: clamp(1.35rem, 3vw, 1.7rem); letter-spacing: -0.035em; }
 .required { align-self: flex-end; color: #888890; font-size: 0.7rem; white-space: nowrap; }
 
-.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; padding-top: 28px; }
+.form { min-width: 0; margin: 0; border: 0; padding: 28px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; }
+.form:disabled { opacity: .65; }
+.error { margin-top: 16px; padding: 12px 14px; border-radius: 10px; background: #fef2f2; color: #991b1b; }
 .field { display: grid; gap: 9px; }
 .fullWidth, .success, .actions { grid-column: 1 / -1; }
 .field label { color: #34343a; font-size: 0.82rem; font-weight: 700; }

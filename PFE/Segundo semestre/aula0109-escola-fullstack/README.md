@@ -1,3 +1,9 @@
+# Projeto Escola
+
+Cadastro, consulta, edição e exclusão de alunos com persistência em SQLite.
+Consulte [Banco de dados e API](docs/BANCO_DE_DADOS.md) para preparar o banco,
+executar o projeto e conferir as rotas e os testes.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
