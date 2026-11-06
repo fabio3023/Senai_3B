@@ -1,9 +1,9 @@
-import db from "../src/app/db/banco.js";
+import banco from "../src/lib/server/db/banco.js";
 
 try {
-  console.log(`Banco pronto: ${db.name}`);
-  console.log("Tabelas:", db.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all());
-  console.log("Integridade:", db.pragma("integrity_check"));
+  console.log(`Banco pronto: ${banco.name}`);
+  console.log("Tabelas:", banco.prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'").all());
+  console.log("Integridade:", banco.pragma("integrity_check"));
 } finally {
-  db.close();
+  banco.close();
 }

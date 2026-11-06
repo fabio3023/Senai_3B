@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Header from "../components/header";
+import Header from "@/components/header";
 import styles from "./page.module.css";
 
 const destaques = [
@@ -76,7 +76,7 @@ export default function Principal() {
           </p>
 
           <div className={styles.actions}>
-            <Link href="/alunos" className={styles.primaryButton}>Cadastrar aluno</Link>
+            <Link href="/cadalunos" className={styles.primaryButton}>Cadastrar aluno</Link>
             <Link href="/cadnotas" className={styles.secondaryButton}>Saiba mais</Link>
           </div>
 

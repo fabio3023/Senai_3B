@@ -4,6 +4,15 @@ Cadastro, consulta, edição e exclusão de alunos com persistência em SQLite.
 Consulte [Banco de dados e API](docs/BANCO_DE_DADOS.md) para preparar o banco,
 executar o projeto e conferir as rotas e os testes.
 
+## Organização
+
+- `src/app`: páginas completas, estilos locais, layouts e rotas da API do Next.js.
+- `src/components`: componentes compartilhados pelas páginas.
+- `src/lib/server/controllers`: operações de servidor para alunos e notas.
+- `src/lib/server/db`: conexão e inicialização do SQLite.
+- `public`: arquivos estáticos, como imagens e ícones referenciados pelo navegador.
+- `data/escola.db`: banco local, criado automaticamente e não versionado.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -22,7 +31,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+As telas ficam diretamente nos `page.jsx` das pastas de rota em `src/app`.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

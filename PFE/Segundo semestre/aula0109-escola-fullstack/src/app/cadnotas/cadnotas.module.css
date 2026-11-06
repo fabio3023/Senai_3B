@@ -1,10 +1,10 @@
-.page {
+.pagina {
   width: min(1040px, calc(100% - 40px));
   margin: 0 auto;
   padding: 26px 0 72px;
 }
 
-.heading {
+.cabecalho {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -12,7 +12,7 @@
   margin-bottom: 30px;
 }
 
-.eyebrow {
+.destaque {
   display: block;
   margin-bottom: 9px;
   color: var(--color-primary);
@@ -22,14 +22,14 @@
   text-transform: uppercase;
 }
 
-.heading h2 {
+.cabecalho h2 {
   color: #18181b;
   font-size: clamp(2.25rem, 5vw, 3.75rem);
   line-height: 1;
   letter-spacing: -0.055em;
 }
 
-.heading p {
+.cabecalho p {
   max-width: 330px;
   padding-bottom: 4px;
   color: #71717a;
@@ -38,7 +38,7 @@
   text-align: right;
 }
 
-.formCard {
+.cartaoFormulario {
   overflow: hidden;
   border: 1px solid rgba(24, 24, 27, 0.08);
   border-radius: 24px;
@@ -46,7 +46,7 @@
   box-shadow: 0 24px 60px rgba(58, 20, 22, 0.1);
 }
 
-.formHeader {
+.cabecalhoFormulario {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -56,7 +56,7 @@
   border-bottom: 1px solid #ececef;
 }
 
-.formHeader > div > span {
+.cabecalhoFormulario > div > span {
   color: var(--color-primary);
   font-size: 0.7rem;
   font-weight: 800;
@@ -64,35 +64,44 @@
   text-transform: uppercase;
 }
 
-.formHeader h3 {
+.cabecalhoFormulario h3 {
   margin-top: 5px;
   color: #27272a;
   font-size: 1.45rem;
   letter-spacing: -0.035em;
 }
 
-.required {
+.obrigatorio {
   color: #85858c;
   font-size: 0.72rem;
 }
 
-.form {
+.formulario {
   padding: 34px clamp(24px, 5vw, 46px) 40px;
 }
 
-.studentField {
+.formulario fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.formulario fieldset:disabled { opacity: 0.65; }
+
+.campoAluno {
   display: grid;
   gap: 9px;
 }
 
-.studentField label {
+.campoAluno label {
   color: #34343a;
   font-size: 0.84rem;
   font-weight: 750;
 }
 
-.studentField input,
-.gradeField input {
+.campoAluno input,
+.campoAluno select,
+.campoNota input {
   width: 100%;
   height: 52px;
   padding: 0 16px;
@@ -104,25 +113,28 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
-.studentField input::placeholder,
-.gradeField input::placeholder {
+.campoAluno input::placeholder,
+.campoAluno select:invalid,
+.campoNota input::placeholder {
   color: #a1a1a8;
 }
 
-.studentField input:hover,
-.gradeField input:hover {
+.campoAluno input:hover,
+.campoAluno select:hover,
+.campoNota input:hover {
   border-color: #c7c7cd;
   background: #fff;
 }
 
-.studentField input:focus,
-.gradeField input:focus {
+.campoAluno input:focus,
+.campoAluno select:focus,
+.campoNota input:focus {
   border-color: var(--color-primary);
   background: #fff;
   box-shadow: 0 0 0 4px rgba(215, 25, 32, 0.09);
 }
 
-.divider {
+.divisor {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -134,47 +146,47 @@
   text-transform: uppercase;
 }
 
-.divider::after {
+.divisor::after {
   content: "";
   height: 1px;
   flex: 1;
   background: #ececef;
 }
 
-.gradesGrid {
+.gradeNotas {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
 }
 
-.gradeField {
+.campoNota {
   display: grid;
   gap: 10px;
 }
 
-.gradeField label {
+.campoNota label {
   display: grid;
   gap: 2px;
 }
 
-.gradeField label strong {
+.campoNota label strong {
   color: #2f2f34;
   font-size: 0.9rem;
 }
 
-.gradeField label span {
+.campoNota label span {
   color: #898990;
   font-size: 0.7rem;
 }
 
-.gradeField input {
+.campoNota input {
   padding: 0 12px;
   font-family: var(--font-geist-mono), monospace;
   font-weight: 650;
   text-align: center;
 }
 
-.success {
+.sucesso {
   margin-top: 24px;
   padding: 12px 14px;
   border-radius: 10px;
@@ -184,7 +196,31 @@
   font-weight: 650;
 }
 
-.actions {
+.erro,
+.aviso {
+  margin-top: 24px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 650;
+}
+
+.erro {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.aviso {
+  background: #f4f4f5;
+  color: #52525b;
+}
+
+.aviso a {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.acoes {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
@@ -193,7 +229,7 @@
   border-top: 1px solid #ececef;
 }
 
-.actions button {
+.acoes button {
   min-height: 48px;
   padding: 0 22px;
   border-radius: 11px;
@@ -202,29 +238,30 @@
   transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
-.actions button:hover { transform: translateY(-1px); }
-.actions button:focus-visible { outline: 3px solid rgba(215, 25, 32, 0.24); outline-offset: 3px; }
-.clearButton { border: 1px solid #dddde2; background: #fff; color: #55555d; }
-.clearButton:hover { background: #f6f6f7; }
-.saveButton { display: inline-flex; align-items: center; gap: 22px; border: 1px solid var(--color-primary); background: var(--color-primary); color: #fff; box-shadow: 0 10px 22px rgba(215, 25, 32, 0.2); }
-.saveButton:hover { background: var(--color-primary-dark); box-shadow: 0 13px 25px rgba(159, 16, 23, 0.24); }
+.acoes button:hover { transform: translateY(-1px); }
+.acoes button:focus-visible { outline: 3px solid rgba(215, 25, 32, 0.24); outline-offset: 3px; }
+.acoes button:disabled { cursor: wait; opacity: 0.6; transform: none; }
+.botaoSecundario { border: 1px solid #dddde2; background: #fff; color: #55555d; }
+.botaoSecundario:hover { background: #f6f6f7; }
+.botaoPrimario { display: inline-flex; align-items: center; gap: 22px; border: 1px solid var(--color-primary); background: var(--color-primary); color: #fff; box-shadow: 0 10px 22px rgba(215, 25, 32, 0.2); }
+.botaoPrimario:hover { background: var(--color-primary-dark); box-shadow: 0 13px 25px rgba(159, 16, 23, 0.24); }
 
 @media (max-width: 760px) {
-  .heading { display: block; }
-  .heading p { margin-top: 12px; text-align: left; }
-  .gradesGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .formHeader { align-items: flex-start; flex-direction: column; gap: 9px; }
+  .cabecalho { display: block; }
+  .cabecalho p { margin-top: 12px; text-align: left; }
+  .gradeNotas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cabecalhoFormulario { align-items: flex-start; flex-direction: column; gap: 9px; }
 }
 
 @media (max-width: 480px) {
-  .page { width: min(100% - 24px, 1040px); padding-top: 10px; }
-  .heading h2 { font-size: 2.4rem; }
-  .formCard { border-radius: 18px; }
-  .gradesGrid { grid-template-columns: 1fr; }
-  .actions { flex-direction: column-reverse; }
-  .actions button { width: 100%; justify-content: center; }
+  .pagina { width: min(100% - 24px, 1040px); padding-top: 10px; }
+  .cabecalho h2 { font-size: 2.4rem; }
+  .cartaoFormulario { border-radius: 18px; }
+  .gradeNotas { grid-template-columns: 1fr; }
+  .acoes { flex-direction: column-reverse; }
+  .acoes button { width: 100%; justify-content: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .studentField input, .gradeField input, .actions button { transition: none; }
+  .campoAluno input, .campoAluno select, .campoNota input, .acoes button { transition: none; }
 }

@@ -1,4 +1,4 @@
-.header {
+.cabecalho {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -12,13 +12,13 @@
   margin-bottom: 30px;
 }
 
-.brandBlock {
+.marca {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
-.brandMark {
+.simbolo {
   width: 42px;
   height: 42px;
   display: grid;
@@ -30,20 +30,20 @@
   font-weight: 800;
 }
 
-.eyebrow {
+.destaque {
   font-size: 0.7rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   opacity: 0.8;
 }
 
-.title {
+.titulo {
   font-size: clamp(1.2rem, 2vw, 1.5rem);
   font-weight: 700;
   letter-spacing: -0.04em;
 }
 
-.nav {
+.navegacao {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -51,7 +51,7 @@
   gap: 8px;
 }
 
-.nav a {
+.navegacao a {
   color: rgba(255, 255, 255, 0.96);
   padding: 10px 14px;
   border-radius: 0;
@@ -62,19 +62,19 @@
   letter-spacing: 0.04em;
 }
 
-.nav a:hover {
+.navegacao a:hover {
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
 }
 
 @media (max-width: 760px) {
-  .header {
+  .cabecalho {
     flex-direction: column;
     align-items: flex-start;
     padding: 18px 20px;
   }
 
-  .nav {
+  .navegacao {
     justify-content: flex-start;
   }
 }

@@ -1,125 +1,171 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
-import Header from "../components/header";
-import styles from "./listalunos.module.css";
+import Header from "@/components/header";
+import estilos from "./listalunos.module.css";
 
 export default function ListaAlunos() {
-  const [students, setStudents] = useState([]);
-  const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const [deleting, setDeleting] = useState(null);
+  const [alunos, setAlunos] = useState([]);
+  const [busca, setBusca] = useState("");
+  const [carregando, setCarregando] = useState(true);
+  const [idEmExclusao, setIdEmExclusao] = useState(null);
+  const [mensagem, setMensagem] = useState("");
+  const [erro, setErro] = useState("");
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controlador = new AbortController();
+
     async function carregarAlunos() {
       try {
-        const response = await fetch("/api/alunos", { cache: "no-store", signal: controller.signal });
-        const dados = await response.json();
-        if (!response.ok) throw new Error(dados.mensagem);
-        setStudents(dados);
-      } catch (error) {
-        if (!controller.signal.aborted) setError(error.message || "Erro ao carregar alunos.");
+        const resposta = await fetch("/api/alunos", {
+          cache: "no-store",
+          signal: controlador.signal,
+        });
+        const dados = await resposta.json();
+
+        if (!resposta.ok) {
+          throw new Error(dados.mensagem || "Não foi possível carregar os alunos.");
+        }
+
+        setAlunos(dados);
+      } catch (falha) {
+        if (!controlador.signal.aborted) {
+          setErro(falha.message || "Não foi possível carregar os alunos.");
+        }
       } finally {
-        if (!controller.signal.aborted) setLoading(false);
+        if (!controlador.signal.aborted) setCarregando(false);
       }
     }
+
     carregarAlunos();
-    return () => controller.abort();
+    return () => controlador.abort();
   }, []);
 
-  const normalizedSearch = search.trim().toLocaleLowerCase("pt-BR");
-  const filteredStudents = students.filter((student) =>
-    [student.nome, student.serie, student.ra].some((value) =>
-      String(value).toLocaleLowerCase("pt-BR").includes(normalizedSearch),
-    ),
-  );
+  const alunosFiltrados = useMemo(() => {
+    const termo = busca.trim().toLocaleLowerCase("pt-BR");
+    if (!termo) return alunos;
 
-  async function excluirAlunos(student) {
-    if (deleting !== null || !window.confirm(`Excluir ${student.nome}? As notas deste aluno também serão excluídas.`)) return;
-    setDeleting(student.id_aluno);
-    setError("");
-    setMessage("");
+    return alunos.filter((aluno) =>
+      [aluno.nome, aluno.idade, aluno.serie, aluno.ra].some((valor) =>
+        String(valor).toLocaleLowerCase("pt-BR").includes(termo),
+      ),
+    );
+  }, [alunos, busca]);
+
+  async function excluirAluno(aluno) {
+    const confirmou = window.confirm(`Deseja realmente excluir ${aluno.nome}?`);
+    if (!confirmou || idEmExclusao !== null) return;
+
+    setIdEmExclusao(aluno.id_aluno);
+    setMensagem("");
+    setErro("");
+
     try {
-      const response = await fetch(`/api/alunos/${student.id_aluno}`, { method: "DELETE" });
-      const dados = await response.json();
-      if (!response.ok) throw new Error(dados.mensagem);
-      setStudents((current) => current.filter((aluno) => aluno.id_aluno !== student.id_aluno));
-      setMessage(dados.mensagem);
-    } catch (error) {
-      setError(error.message || "Erro ao excluir aluno.");
+      const resposta = await fetch(`/api/alunos/${aluno.id_aluno}`, {
+        method: "DELETE",
+      });
+      const dados = await resposta.json();
+
+      if (!resposta.ok) {
+        throw new Error(dados.mensagem || "Não foi possível excluir o aluno.");
+      }
+
+      setAlunos((listaAtual) =>
+        listaAtual.filter((item) => item.id_aluno !== aluno.id_aluno),
+      );
+      setMensagem(dados.mensagem || "Aluno excluído com sucesso!");
+    } catch (falha) {
+      setErro(falha.message || "Não foi possível excluir o aluno.");
     } finally {
-      setDeleting(null);
+      setIdEmExclusao(null);
     }
   }
 
   return (
     <>
       <Header />
-      <main className={styles.page}>
-        <section className={styles.heading} aria-labelledby="page-title">
+
+      <main className={estilos.pagina}>
+        <section className={estilos.cabecalho} aria-labelledby="titulo-pagina">
           <div>
-            <span className={styles.eyebrow}>Gestão acadêmica</span>
-            <h2 id="page-title">Lista de alunos</h2>
-            <p>Consulte e gerencie os estudantes cadastrados na escola.</p>
+            <span className={estilos.destaque}>Gestão acadêmica</span>
+            <h2 id="titulo-pagina">Lista de alunos</h2>
+            <p>Consulte e gerencie todos os alunos cadastrados no sistema.</p>
           </div>
-          <Link href="/alunos" className={styles.addButton}>
-            <span aria-hidden="true">+</span> Novo aluno
+
+          <Link href="/cadalunos" className={estilos.botaoNovo}>
+            <span aria-hidden="true">+</span>
+            Novo aluno
           </Link>
         </section>
 
-        {loading && <p className={styles.feedback} role="status">Carregando alunos...</p>}
-        {error && <p className={styles.error} role="alert">{error}</p>}
-        {message && <p className={styles.feedback} role="status">{message}</p>}
-        <section className={styles.tableCard} aria-label="Alunos cadastrados">
-          <div className={styles.toolbar}>
-            <div>
-              <strong>{students.length}</strong>
-              <span>{students.length === 1 ? "aluno cadastrado" : "alunos cadastrados"}</span>
+        {erro && <p className={estilos.erro} role="alert">{erro}</p>}
+        {mensagem && <p className={estilos.sucesso} role="status">{mensagem}</p>}
+
+        <section className={estilos.cartaoTabela} aria-label="Alunos cadastrados">
+          <div className={estilos.barraFerramentas}>
+            <div className={estilos.quantidade}>
+              <strong>{alunos.length}</strong>
+              <span>{alunos.length === 1 ? "aluno cadastrado" : "alunos cadastrados"}</span>
             </div>
-            <label className={styles.searchField}>
-              <span className={styles.srOnly}>Buscar aluno</span>
+
+            <label className={estilos.campoBusca}>
+              <span className={estilos.somenteLeitor}>Buscar aluno</span>
               <span aria-hidden="true">⌕</span>
-              <input type="search" value={search} onChange={(event) => setSearch(event.target.value)}
-                placeholder="Buscar por nome, série ou RA" />
+              <input
+                type="search"
+                value={busca}
+                onChange={(evento) => setBusca(evento.target.value)}
+                placeholder="Buscar por nome, série ou RA"
+              />
             </label>
           </div>
 
-          <div className={styles.tableWrapper}>
-            <table>
+          <div className={estilos.areaTabela}>
+            <table className={estilos.tabela}>
               <thead>
                 <tr>
-                  <th>ID</th><th>Nome</th><th>Idade</th><th>Série</th><th>RA</th><th>Notas</th>
-                  <th><span className={styles.srOnly}>Ações</span></th>
+                  <th>ID</th>
+                  <th>Nome</th>
+                  <th>Idade</th>
+                  <th>Série</th>
+                  <th>RA</th>
+                  <th><span className={estilos.somenteLeitor}>Ações</span></th>
                 </tr>
               </thead>
+
               <tbody>
-                {filteredStudents.map((student) => (
-                  <tr key={student.id_aluno}>
-                    <td data-label="ID"><span className={styles.id}>#{String(student.id_aluno).padStart(2, "0")}</span></td>
+                {alunosFiltrados.map((aluno) => (
+                  <tr key={aluno.id_aluno}>
+                    <td data-label="ID">
+                      <span className={estilos.identificador}>
+                        #{String(aluno.id_aluno).padStart(2, "0")}
+                      </span>
+                    </td>
                     <td data-label="Nome">
-                      <div className={styles.studentName}>
-                        <span aria-hidden="true">{student.nome.charAt(0)}</span>
-                        <strong>{student.nome}</strong>
+                      <div className={estilos.nomeAluno}>
+                        <span aria-hidden="true">{aluno.nome.charAt(0).toUpperCase()}</span>
+                        <strong>{aluno.nome}</strong>
                       </div>
                     </td>
-                    <td data-label="Idade">{student.idade} anos</td>
-                    <td data-label="Série"><span className={styles.classTag}>{student.serie}</span></td>
-                    <td data-label="RA"><span className={styles.ra}>{student.ra}</span></td>
-                    <td data-label="Notas">
-                      <div className={styles.grades} aria-label={`Notas de ${student.nome}`}>
-                        {student.notas ? Object.entries(student.notas).map(([name, value]) => (
-                          <span key={name}><small>{name.toUpperCase()}</small>{value.toFixed(1)}</span>
-                        )) : <span>Sem notas</span>}
-                      </div>
-                    </td>
-                    <td className={styles.rowActions}>
-                      <Link href={`/alunos?editar=${student.id_aluno}`} className={styles.editButton}>Editar</Link>
-                      <button type="button" disabled={deleting !== null} onClick={() => excluirAlunos(student)}>
-                        {deleting === student.id_aluno ? "Excluindo..." : "Excluir"}
+                    <td data-label="Idade">{aluno.idade} anos</td>
+                    <td data-label="Série"><span className={estilos.serie}>{aluno.serie}</span></td>
+                    <td data-label="RA"><span className={estilos.ra}>{aluno.ra}</span></td>
+                    <td className={estilos.acoes}>
+                      <Link
+                        href={`/cadalunos?editar=${aluno.id_aluno}`}
+                        className={estilos.botaoEditar}
+                      >
+                        Editar
+                      </Link>
+                      <button
+                        type="button"
+                        className={estilos.botaoExcluir}
+                        disabled={idEmExclusao !== null}
+                        onClick={() => excluirAluno(aluno)}
+                      >
+                        {idEmExclusao === aluno.id_aluno ? "Excluindo..." : "Excluir"}
                       </button>
                     </td>
                   </tr>
@@ -127,12 +173,23 @@ export default function ListaAlunos() {
               </tbody>
             </table>
 
-            {!loading && !error && filteredStudents.length === 0 && (
-              <div className={styles.emptyState}>
-                <span aria-hidden="true">{search ? "⌕" : "—"}</span>
-                <h3>{search ? "Nenhum aluno encontrado" : "Nenhum aluno cadastrado"}</h3>
-                <p>{search ? "Tente buscar usando outro termo." : "Cadastre um aluno para iniciar a lista."}</p>
-                {!search && <Link href="/alunos">Cadastrar aluno</Link>}
+            {carregando && (
+              <div className={estilos.estadoVazio} role="status">
+                <span className={estilos.carregador} aria-hidden="true" />
+                <h3>Carregando alunos...</h3>
+              </div>
+            )}
+
+            {!carregando && !erro && alunosFiltrados.length === 0 && (
+              <div className={estilos.estadoVazio}>
+                <span aria-hidden="true">{busca ? "⌕" : "—"}</span>
+                <h3>{busca ? "Nenhum aluno encontrado" : "Nenhum aluno cadastrado"}</h3>
+                <p>
+                  {busca
+                    ? "Tente fazer a busca usando outro termo."
+                    : "Cadastre o primeiro aluno para começar."}
+                </p>
+                {!busca && <Link href="/cadalunos">Cadastrar aluno</Link>}
               </div>
             )}
           </div>

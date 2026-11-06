@@ -1,4 +1,6 @@
 :root {
+  --font-geist-sans: "Segoe UI", Arial, Helvetica, sans-serif;
+  --font-geist-mono: Consolas, "Courier New", monospace;
   --color-primary: #d71920;
   --color-primary-dark: #9f1017;
   --color-primary-soft: #fff2f2;
@@ -83,4 +85,3 @@ img {
   line-height: 1.75;
   max-width: 680px;
 }
-

@@ -7,9 +7,15 @@ import Database from "better-sqlite3";
 
 const directory = mkdtempSync(path.join(tmpdir(), "escola-test-"));
 process.env.ESCOLA_DB_PATH = path.join(directory, "escola.db");
-const { default: db } = await import("../src/app/db/banco.js");
+const { default: db } = await import("../src/lib/server/db/banco.js");
 const { GET: listar, POST: salvar } = await import("../src/app/api/alunos/route.js");
 const { GET: buscar, PUT: editar, DELETE: excluir } = await import("../src/app/api/alunos/[id]/route.js");
+const { GET: listarNotas, POST: salvarNota } = await import("../src/app/api/notas/route.js");
+const {
+  GET: buscarNota,
+  PUT: editarNota,
+  DELETE: excluirNota,
+} = await import("../src/app/api/notas/[id]/route.js");
 
 after(() => {
   db.close();
@@ -87,4 +93,62 @@ test("normaliza espaços e mantém RA com zeros e nomes com apóstrofo", async (
   }))).json();
   assert.deepEqual(aluno, { id_aluno: aluno.id_aluno, nome: "D'Ávila", idade: 16, serie: "2A", ra: "00001" });
   assert.equal((await (await listar()).json()).find((item) => item.id_aluno === aluno.id_aluno).notas, null);
+});
+
+test("cadastra notas para um aluno e valida vínculo e valores", async () => {
+  const { aluno } = await (await salvar(request({ ...ana, ra: "00888" }))).json();
+  const dados = { aluno_id: aluno.id_aluno, t1: 8.5, t2: 9, n1: 7, n2: 8, n3: 10 };
+  const response = await salvarNota(request(dados));
+  assert.equal(response.status, 201);
+  const resultado = await response.json();
+  assert.deepEqual(resultado.nota, { id_notas: resultado.nota.id_notas, ...dados });
+  assert.equal((await (await listar()).json()).find((item) => item.id_aluno === aluno.id_aluno).notas.t1, 8.5);
+  assert.equal(db.prepare("SELECT count(*) AS total FROM notas WHERE aluno_id = ?").get(aluno.id_aluno).total, 1);
+
+  for (const nota of [
+    { ...dados, aluno_id: 999999 },
+    { ...dados, t1: -0.1 },
+    { ...dados, n2: 10.1 },
+    { ...dados, n3: "inválida" },
+    { ...dados, t2: "" },
+    { ...dados, n1: undefined },
+  ]) {
+    assert.equal((await salvarNota(request(nota))).status, nota.aluno_id === 999999 ? 404 : 400);
+  }
+  const malformed = new Request("http://localhost/api/notas", { method: "POST", body: "{" });
+  assert.equal((await salvarNota(malformed)).status, 400);
+  assert.equal(db.prepare("SELECT count(*) AS total FROM notas WHERE aluno_id = ?").get(aluno.id_aluno).total, 1);
+});
+
+test("lista, consulta, edita e exclui notas pelo ID", async () => {
+  const { aluno } = await (await salvar(request({ ...ana, nome: "Carla", ra: "00889" }))).json();
+  const dadosIniciais = { aluno_id: aluno.id_aluno, t1: 6, t2: 7, n1: 8, n2: 9, n3: 10 };
+  const cadastro = await (await salvarNota(request(dadosIniciais))).json();
+
+  const listaDeNotas = await (await listarNotas()).json();
+  const item = listaDeNotas.find((nota) => nota.id_notas === cadastro.nota.id_notas);
+  assert.equal(item.nome, "Carla");
+  assert.equal(item.ra, "00889");
+
+  const consulta = await buscarNota(null, contexto(cadastro.nota.id_notas));
+  assert.equal(consulta.status, 200);
+  assert.equal((await consulta.json()).t1, 6);
+
+  const dadosEditados = { ...dadosIniciais, t1: 9.5, n3: 8.5 };
+  const edicao = await editarNota(request(dadosEditados, "PUT"), contexto(cadastro.nota.id_notas));
+  assert.equal(edicao.status, 200);
+  assert.equal((await edicao.json()).nota.t1, 9.5);
+  assert.equal((await (await buscarNota(null, contexto(cadastro.nota.id_notas))).json()).n3, 8.5);
+
+  for (const id of ["abc", "0", "-1", "1.5"]) {
+    assert.equal((await buscarNota(null, contexto(id))).status, 400);
+    assert.equal((await editarNota(request(dadosEditados, "PUT"), contexto(id))).status, 400);
+    assert.equal((await excluirNota(null, contexto(id))).status, 400);
+  }
+
+  assert.equal((await buscarNota(null, contexto(999999))).status, 404);
+  assert.equal((await editarNota(request(dadosEditados, "PUT"), contexto(999999))).status, 404);
+  assert.equal((await excluirNota(null, contexto(999999))).status, 404);
+  assert.equal((await excluirNota(null, contexto(cadastro.nota.id_notas))).status, 200);
+  assert.equal((await buscarNota(null, contexto(cadastro.nota.id_notas))).status, 404);
 });
