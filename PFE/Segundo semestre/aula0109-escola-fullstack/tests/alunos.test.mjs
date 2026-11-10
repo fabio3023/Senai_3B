@@ -16,6 +16,8 @@ const {
   PUT: editarNota,
   DELETE: excluirNota,
 } = await import("../src/app/api/notas/[id]/route.js");
+const { GET: listarDisciplinas, POST: salvarDisciplina } = await import("../src/app/api/disciplinas/route.js");
+const { GET: listarProfessores, POST: salvarProfessor } = await import("../src/app/api/professores/route.js");
 
 after(() => {
   db.close();
@@ -151,4 +153,69 @@ test("lista, consulta, edita e exclui notas pelo ID", async () => {
   assert.equal((await excluirNota(null, contexto(999999))).status, 404);
   assert.equal((await excluirNota(null, contexto(cadastro.nota.id_notas))).status, 200);
   assert.equal((await buscarNota(null, contexto(cadastro.nota.id_notas))).status, 404);
+});
+
+test("cadastra disciplinas e professores com vínculo, validações e restrições únicas", async () => {
+  const dadosDisciplina = { nome: "  Ciências  ", pontuacao_minima: 6.5 };
+  const cadastroDisciplina = await salvarDisciplina(request(dadosDisciplina));
+  assert.equal(cadastroDisciplina.status, 201);
+  const { disciplina } = await cadastroDisciplina.json();
+  assert.deepEqual(disciplina, {
+    id_disciplina: disciplina.id_disciplina,
+    nome: "Ciências",
+    pontuacao_minima: 6.5,
+  });
+
+  assert.equal((await salvarDisciplina(request(dadosDisciplina))).status, 409);
+  for (const dados of [
+    null,
+    [],
+    {},
+    { nome: " ", pontuacao_minima: 5 },
+    { nome: "História", pontuacao_minima: -1 },
+    { nome: "História", pontuacao_minima: 10.1 },
+    { nome: "História", pontuacao_minima: "inválida" },
+  ]) {
+    assert.equal((await salvarDisciplina(request(dados))).status, 400);
+  }
+
+  const dadosProfessor = {
+    nome: "  Joana Lima ",
+    matricula_nif: " NIF-001 ",
+    dias_aula: ["segunda", "quarta"],
+    total_aulas_semana: 18,
+    disciplina_id: disciplina.id_disciplina,
+  };
+  const cadastroProfessor = await salvarProfessor(request(dadosProfessor));
+  assert.equal(cadastroProfessor.status, 201);
+  const { professor } = await cadastroProfessor.json();
+  assert.deepEqual(professor, {
+    id_professor: professor.id_professor,
+    nome: "Joana Lima",
+    matricula_nif: "NIF-001",
+    dias_aula: ["segunda", "quarta"],
+    total_aulas_semana: 18,
+    disciplina_id: disciplina.id_disciplina,
+  });
+  assert.equal((await salvarProfessor(request(dadosProfessor))).status, 409);
+
+  const listaDisciplinas = await (await listarDisciplinas()).json();
+  assert.equal(listaDisciplinas.some((item) => item.id_disciplina === disciplina.id_disciplina), true);
+  const listaProfessores = await (await listarProfessores()).json();
+  assert.deepEqual(listaProfessores.find((item) => item.id_professor === professor.id_professor), {
+    ...professor,
+    disciplina_nome: "Ciências",
+  });
+
+  for (const dados of [
+    { ...dadosProfessor, matricula_nif: "NIF-002", dias_aula: [] },
+    { ...dadosProfessor, matricula_nif: "NIF-002", dias_aula: ["fundamental"] },
+    { ...dadosProfessor, matricula_nif: "NIF-002", dias_aula: ["segunda", "segunda"] },
+    { ...dadosProfessor, matricula_nif: "NIF-002", total_aulas_semana: 0 },
+    { ...dadosProfessor, matricula_nif: "NIF-002", total_aulas_semana: 1.5 },
+    { ...dadosProfessor, matricula_nif: "NIF-002", disciplina_id: 999999 },
+  ]) {
+    assert.equal((await salvarProfessor(request(dados))).status, dados.disciplina_id === 999999 ? 404 : 400);
+  }
+  assert.deepEqual(db.pragma("foreign_key_check"), []);
 });

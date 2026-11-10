@@ -32,8 +32,27 @@ banco.exec(`
     FOREIGN KEY (aluno_id) REFERENCES alunos(id_aluno) ON DELETE CASCADE
   );
 
+  CREATE TABLE IF NOT EXISTS disciplinas (
+    id_disciplina INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL UNIQUE CHECK (length(trim(nome)) > 0),
+    pontuacao_minima REAL NOT NULL CHECK (pontuacao_minima BETWEEN 0 AND 10)
+  );
+
+  CREATE TABLE IF NOT EXISTS professores (
+    id_professor INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL CHECK (length(trim(nome)) > 0),
+    matricula_nif TEXT NOT NULL UNIQUE CHECK (length(trim(matricula_nif)) > 0),
+    dias_aula TEXT NOT NULL CHECK (length(trim(dias_aula)) > 0),
+    total_aulas_semana INTEGER NOT NULL CHECK (
+      typeof(total_aulas_semana) = 'integer' AND total_aulas_semana BETWEEN 1 AND 60
+    ),
+    disciplina_id INTEGER NOT NULL,
+    FOREIGN KEY (disciplina_id) REFERENCES disciplinas(id_disciplina) ON DELETE RESTRICT
+  );
+
   CREATE INDEX IF NOT EXISTS idx_alunos_nome ON alunos(nome);
   CREATE INDEX IF NOT EXISTS idx_notas_aluno_id ON notas(aluno_id);
+  CREATE INDEX IF NOT EXISTS idx_professores_disciplina_id ON professores(disciplina_id);
 `);
 
 export default banco;

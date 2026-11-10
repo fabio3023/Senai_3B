@@ -16,6 +16,7 @@ export default function Cabecalho() {
         <Link href="/">Início</Link>
         <Link href="/principal">Sobre</Link>
         <Link href="/cadalunos">Cadastrar aluno</Link>
+        <Link href="/cadprofessores">Professores</Link>
         <Link href="/listalunos">Alunos</Link>
         <Link href="/cadnotas">Lançar notas</Link>
         <Link href="/notas">Boletins</Link>
