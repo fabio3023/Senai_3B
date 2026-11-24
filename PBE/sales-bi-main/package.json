@@ -1,0 +1,7 @@
+{
+  "name": "autosales-bi",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "start": "node src/app.js" },
+  "engines": { "node": ">=22.13.0" }
+}
